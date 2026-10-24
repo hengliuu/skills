@@ -1,0 +1,2 @@
+# The hook scripts run under a POSIX shell; a CRLF checkout on Windows breaks them.
+*.sh text eol=lf

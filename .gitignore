@@ -1,0 +1,24 @@
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.pyc
+.DS_Store
+
+
+results
+graphify-out
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/
+
+# graft's per-user wiring, written by `graft init` — each person runs it themselves.
+# Committed, these would force graft's hooks, statusline and MCP server on everyone.
+/.claude/settings.json
+/.claude/helpers/graft-*.cjs
+/.claude/skills/graft/
+/.mcp.json
+/.ignore
+
+# graft's skill wiring for the skills CLI layout — per-user, like /.claude/skills/graft/.
+/.agents/skills/graft/
