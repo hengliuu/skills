@@ -1,0 +1,73 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  hooks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: hooks
+        run: python -m unittest discover -s hooks/tests
+      - name: role-orchestrator skill
+        run: python -m unittest discover -s skills/roles/role-orchestrator/tests
+
+  manifests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Parse manifests and check marketplace sources
+        run: |
+          python - <<'PY'
+          import glob, json, os, sys
+          files = glob.glob(".claude-plugin/*.json") + glob.glob("hooks/*.json")
+          bad = []
+          for f in files:
+              try:
+                  json.load(open(f))
+              except ValueError as e:
+                  bad.append(f"{f}: {e}")
+          market = json.load(open(".claude-plugin/marketplace.json"))
+          for plugin in market["plugins"]:
+              if not os.path.isdir(plugin["source"]):
+                  bad.append(f"marketplace source missing: {plugin['source']}")
+          if bad:
+              print("\n".join(bad))
+              sys.exit(1)
+          print(f"{len(files)} manifests OK")
+          PY
+
+  skills:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - run: python scripts/validate_skills.py
+
+  plugin-validate:
+    runs-on: ubuntu-latest
+    # Not yet known whether `claude plugin validate` works without auth in CI,
+    # so a failure here does not fail the workflow.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npx -y @anthropic-ai/claude-code@latest plugin validate . --strict
