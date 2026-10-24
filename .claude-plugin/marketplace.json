@@ -1,0 +1,31 @@
+{
+  "name": "hengliuu",
+  "owner": {
+    "name": "Hengky",
+    "url": "https://github.com/hengliuu"
+  },
+  "metadata": {
+    "description": "A personal agentic engineering workflow for AI coding harnesses: the Golden Rules working-style file, a planning-to-review workflow with gates, engineering guidelines, and portable agent roles. Works as a Claude Code plugin, or on any harness through the skills CLI.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "hengliuu-skills",
+      "source": "./",
+      "description": "A personal agentic engineering workflow for AI coding harnesses: the Golden Rules working-style file, a planning-to-review workflow with gates, engineering guidelines, and portable agent roles. Works as a Claude Code plugin, or on any harness through the skills CLI. Layers on superpowers, installed separately.",
+      "category": "workflow",
+      "keywords": [
+        "workflow",
+        "working-style",
+        "code-review",
+        "planning",
+        "skills",
+        "agents",
+        "subagents",
+        "orchestration",
+        "worktrees",
+        "roles"
+      ]
+    }
+  ]
+}
