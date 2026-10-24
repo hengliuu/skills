@@ -1,0 +1,59 @@
+# Ledgerly
+
+> Illustrative only — a made-up project showing what a filled-in `AGENTS.md` looks like.
+> Copy `AGENTS.md` (the template), not this file.
+
+## What is this project?
+
+Invoice reconciliation for finance teams: ingests bank statements and ERP invoices,
+matches them, and flags the leftovers for a human to resolve. Used by the client's
+AR team daily; month-end close is the peak.
+
+## Repo map
+
+- `services/api/` — TypeScript REST API (Hono + Postgres); matching rules live in `src/modules/match/`
+- `services/worker/` — TypeScript queue worker that runs statement ingestion
+- `web/` — React (Vite + TanStack Router) operator console
+- `docs/superpowers/specs/`, `docs/superpowers/plans/` — designs and task breakdowns
+
+## Working style - Skills
+
+Working-style rules come from `golden-rules` — auto-injected each session
+on Claude Code, linked into the harness's global context everywhere else.
+Rules here override them for this repo only.
+
+- **Type safety is the priority.** No `any`, no redundant or duplicate code.
+- **New feature / behavior change → `brainstorming` first**, then `writing-plans` from superpowers.
+- **Stack skills:** `acme-api-patterns` for `services/*`, `acme-web-patterns` for `web/`
+  (the team's own skills, installed per project).
+- Invoke skills proactively; the user shouldn't have to name them.
+
+## Project-specific conventions
+
+- Shared package: `@ledgerly/shared`.
+- Money is integer minor units everywhere (`bigint`); never a floating-point number.
+- Ports: API 8080, worker metrics 9091, web 5173.
+- pnpm only in `web/`.
+
+## Agents
+
+- **Roles used:** worker, chore, reviewer. Project agents: none.
+- **Checks:** `make test` from the repo root (needs Docker); `cd web && pnpm test` for `web/`.
+- **Never touch:** `services/api/migrations/` once merged; any `.env`.
+- **Reviewer lenses, in order:** money correctness (minor units, rounding), data loss,
+  security, tests. Review every branch that touches `src/modules/match/` or a migration.
+- **Limits:** at most 2 agents at once (one Postgres container each). Chores stay on
+  sonnet until the Haiku pilot runs here.
+- **Release runbook:** the orchestrator never releases; merges go through a pull request.
+
+## Commands & gotchas
+
+- `make dev` — API + worker + Postgres via docker compose
+- `make test` — tests with testcontainers (Docker must be running)
+- `cd web && pnpm dev` — console against the local API
+- Never commit secrets or read `.env` (only `.env.example`).
+
+## End-of-session hygiene
+
+When a task is complete and there are uncommitted changes, proactively offer
+`/commit-group` to organize changes into atomic commits.

@@ -1,0 +1,1 @@
+../../skills/workflow/golden-rules/AGENTS.md
