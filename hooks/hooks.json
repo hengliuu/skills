@@ -1,0 +1,54 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat \"${CLAUDE_PLUGIN_ROOT}/skills/workflow/golden-rules/AGENTS.md\"; { grep -qs superpowers \"$HOME/.claude/plugins/installed_plugins.json\" || [ -d \"$HOME/.claude/skills/using-superpowers\" ] || [ -d \".claude/skills/using-superpowers\" ]; } || printf '\\n⚠️ MISSING PREREQUISITE: superpowers is not installed. these skills layer on top of it. Tell the user to run:\\n  npx skills@latest add obra/superpowers -a claude-code -g\\n(-a takes any supported harness: claude-code, kiro-cli, opencode, zcode, cursor, …)\\n'"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/check-codebase-map.sh\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit|Bash|Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 10,
+            "command": "P=\"${CLAUDE_PLUGIN_ROOT}/hooks/gate.py\"; if python3 -c '' >/dev/null 2>&1; then exec python3 \"$P\"; else exec python \"$P\"; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 10,
+            "command": "P=\"${CLAUDE_PLUGIN_ROOT}/hooks/map_gate.py\"; if python3 -c '' >/dev/null 2>&1; then exec python3 \"$P\"; else exec python \"$P\"; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 10,
+            "command": "P=\"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch_check.py\"; if python3 -c '' >/dev/null 2>&1; then exec python3 \"$P\"; else exec python \"$P\"; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
