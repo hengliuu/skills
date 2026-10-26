@@ -21,10 +21,10 @@ effort.
 2. **Gates, not suggestions.** Hooks pause the first code edit of a session until the
    coding guidelines are loaded, and the first merge until a reviewer has run. Each gate
    fires once, so it is a stop to think, never a loop. The hooks have their own test suite.
-3. **Roles with their own model and effort.** Five agents (worker, chore, designer,
-   reviewer, product) each work in their own git worktree, on the model the job needs:
-   mechanical edits on Haiku, implementation on Sonnet, design, review and product calls
-   on Opus.
+3. **Roles with their own model and effort.** Six agents (worker, chore, designer,
+   reviewer, product, project manager) each work in their own git worktree, on the model
+   the job needs: mechanical edits on Haiku, implementation on Sonnet, design, review,
+   product and tracker calls on Opus.
 4. **One map from request to merge.** `workflow-map` routes each piece of work to the
    stage and skill that own it. Every plan ends in a task table (task, depends on, files,
    role, effort, check), so "done" always has a named check behind it.
@@ -93,9 +93,10 @@ See [docs/install.md](docs/install.md).
 | [`role-designer`](skills/roles/role-designer/SKILL.md) | Specs, investigations and root-cause hunts, delivered as documents |
 | [`role-reviewer`](skills/roles/role-reviewer/SKILL.md) | Reviews a branch with severity, file and line, a failure scenario and the smallest fix |
 | [`role-product`](skills/roles/role-product/SKILL.md) | Positioning, pricing, onboarding and copy review, one recommendation with its reason |
+| [`role-project-manager`](skills/roles/role-project-manager/SKILL.md) | Tracker structure and sync: story per requirement, states by group, Definition of Done, status from evidence |
 | [`role-base`](skills/roles/role-base/SKILL.md) | The contract every dispatched role shares |
 
-On Claude Code, five thin agents in [`agents/`](agents) preload these skills and set each
+On Claude Code, six thin agents in [`agents/`](agents) preload these skills and set each
 role's model and effort.
 
 ### What it leaves to you

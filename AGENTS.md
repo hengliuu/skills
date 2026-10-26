@@ -19,14 +19,14 @@ skills, context, hooks and manifests. Read `README.md` for what's inside and how
     and `loop-discipline`.
   - `skills/engineering/` holds `karpathy-guidelines` and `claude-md-author`.
   - `skills/roles/` holds `role-orchestrator` (a main session running a batch of independent tasks, one
-    worktree each, merged by cherry-pick) and six `role-*` skills that carry each role's method, so
+    worktree each, merged by cherry-pick) and seven `role-*` skills that carry each role's method, so
     they travel to any harness. `role-orchestrator/references/model-map.md` is the single source for
     model and effort per role and harness. Change a value there and in the agent file together, then
     run `python3 -m unittest discover -s skills/roles/role-orchestrator/tests`. Role skills never set
     `disable-model-invocation` (it blocks preloading). They use `user-invocable: false` and a "load
     only when dispatched" description. No project names in them: a project's ports, locks and checks
     belong in that project's `AGENTS.md` Agents section.
-- `agents/*.md` — thin Claude Code wrappers for the five roles: frontmatter (model, effort,
+- `agents/*.md` — thin Claude Code wrappers for the six roles: frontmatter (model, effort,
   `autoCompactWindow`, preloaded skills) plus a two-line body, nothing else. They preload skills by
   **namespaced** name (`hengliuu-skills:role-worker`) because a bare name resolves to a project or user
   skill of the same name first. `autoCompactWindow` takes an integer (`300000`, never `300K`: that is

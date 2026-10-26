@@ -75,6 +75,7 @@ tool is available.
 | designer | `opus` | `high` | `300000` | — | `hengliuu-skills:role-base`, `hengliuu-skills:role-designer`, `hengliuu-skills:karpathy-guidelines` |
 | reviewer | `opus` | `high` | `300000` | `Read`, `Grep`, `Glob`, `Bash`, `Skill` | `hengliuu-skills:role-reviewer`, `hengliuu-skills:karpathy-guidelines` |
 | product | `opus` | `medium` | — | — | `hengliuu-skills:role-product` |
+| project-manager | `opus` | `medium` | — | — | `hengliuu-skills:role-project-manager` |
 
 - **orchestrator** is a skill, not an agent: it runs in the main session on the session's
   model (opus) and effort.
