@@ -1,7 +1,7 @@
 {
   "name": "hengliuu-skills",
-  "version": "1.1.0",
-  "description": "A personal agentic engineering workflow for AI coding harnesses: the Golden Rules working-style file, a planning-to-review workflow with gates, engineering guidelines, and portable agent roles. Works as a Claude Code plugin, or on any harness through the skills CLI. On Claude Code, one-shot gates stop the first code write before karpathy-guidelines and the first work-branch merge before a review (HENGLIUU_GATES=off disables them). Layers on superpowers, installed separately.",
+  "version": "1.2.0",
+  "description": "A personal agentic engineering workflow for AI coding harnesses: the Golden Rules working-style file, a planning-to-review workflow with gates, engineering guidelines, and portable agent roles. Works as a Claude Code plugin, or on any harness through the skills CLI. On Claude Code, one-shot gates stop the first code write before karpathy-guidelines and the first work-branch merge before a review (HENGLIUU_GATES=off disables them). Layers on superpowers and EGM, installed separately.",
   "author": {
     "name": "Hengky",
     "url": "https://github.com/hengliuu"

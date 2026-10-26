@@ -3,7 +3,9 @@
 A plan ends in one table. It is what makes the [execution tier](../SKILL.md#picking-an-execution-tier)
 a lookup instead of a guess, and it is what an orchestrator dispatches from. `writing-plans`
 (superpowers) does not write it on its own, so ask for it when the plan is written, and add
-it to an approved plan that lacks one before picking a tier.
+it to an approved plan that lacks one before picking a tier. `egm-draft` does not write it
+either: on the EGM path, add it after the approved design doc's build steps, and that doc is
+the plan.
 
 ## Format
 
@@ -20,7 +22,7 @@ it to an approved plan that lacks one before picking a tier.
   one when it reads that task's output or builds on its code.
 - **Files it writes:** paths or globs. This is what decides whether two tasks can run at once.
   Read-only tasks write `none`.
-- **Role:** `worker`, `chore`, `designer`, `reviewer`, `product`, or a project agent that the
+- **Role:** `worker`, `chore`, `designer`, `reviewer`, `product`, `project-manager`, or a project agent that the
   project's `AGENTS.md` names. Use `chore` only when the change is already decided and only
   has to be applied. Without the roles installed, write the role anyway: it still tells a
   solo run which tasks need judgment.

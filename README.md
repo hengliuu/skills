@@ -27,7 +27,9 @@ effort.
    product and tracker calls on Opus.
 4. **One map from request to merge.** `workflow-map` routes each piece of work to the
    stage and skill that own it. Every plan ends in a task table (task, depends on, files,
-   role, effort, check), so "done" always has a named check behind it.
+   role, effort, check), so "done" always has a named check behind it. A large feature
+   gets its design reviewed by [EGM](https://github.com/google/elephant-goldfish-model)'s
+   zero-context reviewers before any code is written.
 
 ## How work flows
 
@@ -42,11 +44,16 @@ A human approves each handover, and pushing is always the human's step.
 
 ## Install
 
-On Claude Code. [superpowers](https://github.com/obra/superpowers) is required, since these
-skills build on its planning, TDD and review skills.
+On Claude Code. Two prerequisites are required: [superpowers](https://github.com/obra/superpowers)
+for planning, TDD and review, and [EGM](https://github.com/google/elephant-goldfish-model)
+for the design review of large features. Keep both: EGM stops at the approved design, and
+superpowers carries the build. Install EGM as a plugin, not with `npx skills`, because its
+reviewer agents only come with the plugin.
 
 ```
 npx skills@latest add obra/superpowers -a claude-code -g
+/plugin marketplace add google/elephant-goldfish-model
+/plugin install egm@egm
 /plugin marketplace add hengliuu/skills
 /plugin install hengliuu-skills@hengliuu
 ```
@@ -110,7 +117,7 @@ skills you choose. These skills own the process around the code, not the code st
 ```
 .claude-plugin/   marketplace and plugin manifests
 skills/           workflow, engineering and roles, one folder per skill
-agents/           the five role agents for Claude Code
+agents/           the six role agents for Claude Code
 hooks/            session-start rules, gates and their tests
 templates/        a starter AGENTS.md for your own projects
 ```
@@ -120,15 +127,23 @@ templates/        a starter AGENTS.md for your own projects
 This repo stands on other people's work, and says so.
 
 - [superpowers](https://github.com/obra/superpowers) by Jesse Vincent: brainstorming,
-  plans, TDD and code review. Required.
+  plans, TDD and code review. Required. MIT.
+- [Elephant-Goldfish Model (EGM)](https://github.com/google/elephant-goldfish-model), an
+  open-source method created at Google and based on Dave Rensin's essay
+  [Elephants, Goldfish, and the New Golden Age of Software Engineering](https://medium.com/@drensin/elephants-goldfish-and-the-new-golden-age-of-software-engineering-c33641a48874).
+  Its zero-context reviewers check the design of a large feature before any code is
+  written. Required. Apache 2.0. EGM is not an officially supported Google product, and
+  this repo is not affiliated with or endorsed by Google.
 - [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) by
-  forrestchang. `karpathy-guidelines` is a fork of it (MIT), and also draws on
+  forrestchang. `karpathy-guidelines` is a fork of it (MIT, with the upstream notice in
+  [its folder](skills/engineering/karpathy-guidelines/LICENSE)), and also draws on
   [Andrej Karpathy's notes](https://x.com/karpathy/status/2015883857489522876), read directly.
 - [Matt Pocock's skills](https://github.com/mattpocock/skills). `grill-me` is the
-  recommended way to stress-test a spec before it becomes a plan.
+  recommended way to stress-test a spec before it becomes a plan. MIT.
 
-Third-party skills are never copied into this repo. The plugin checks for what it needs at
-session start and tells you what to install. The full list is in
+Apart from the `karpathy-guidelines` fork, third-party skills are never copied into this
+repo. You install each one from its own repo, under its own license. The plugin checks for
+what it needs at session start and tells you what to install. The full list is in
 [Recommended community skills](docs/install.md#recommended-community-skills).
 
 ## Contributing

@@ -12,7 +12,7 @@ Skills that carry a piece of work from request to merged commit. They hold the G
 
 ## Hooks (Claude Code only)
 
-At session start the plugin injects the Golden Rules and warns when superpowers is missing. It also warns when the repo has a build manifest but no codebase map.
+At session start the plugin injects the Golden Rules and warns when superpowers or EGM is missing. It also warns when the repo has a build manifest but no codebase map.
 
 Before a tool runs, `hooks/gate.py` stops two Golden Rules from being skipped. Each gate fires at most once per session, and a retry always passes, so it costs one turn and never loops.
 
@@ -27,4 +27,4 @@ Subagents skip both gates. One more check runs for subagents only, on every call
 
 Set `HENGLIUU_GATES=off` in the environment to turn off every gate in an emergency. Every hook runs on Python 3.9, the `/usr/bin/python3` macOS ships.
 
-Requires [superpowers](https://github.com/obra/superpowers), installed separately with `npx skills@latest add obra/superpowers -a claude-code -g`.
+Requires [superpowers](https://github.com/obra/superpowers), installed separately with `npx skills@latest add obra/superpowers -a claude-code -g`, and [EGM](https://github.com/google/elephant-goldfish-model), installed as a plugin with `/plugin marketplace add google/elephant-goldfish-model` and `/plugin install egm@egm`.

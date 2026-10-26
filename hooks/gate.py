@@ -143,8 +143,8 @@ def main() -> None:
     if tool == "Bash" and merges_work_branch(command) \
             and should_block(session, "review", lambda: review_ran(transcript)):
         deny("Golden Rule: no reviewer ran in this session before this merge (hengliuu-skills gate, "
-             "once per session). Dispatch a reviewer on the range, or invoke "
-             "requesting-code-review, then merge. If review already happened elsewhere, say "
+             "once per session). Dispatch a reviewer on the range (without subagents, invoke "
+             "requesting-code-review), then merge. If review already happened elsewhere, say "
              "where and retry: the gate will not fire again this session.")
 
 

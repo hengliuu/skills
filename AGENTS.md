@@ -33,7 +33,8 @@ skills, context, hooks and manifests. Read `README.md` for what's inside and how
   rejected at load with only a debug-log warning, and the agent keeps the session's window).
 - `hooks/hooks.json` — all hooks of the plugin. The SessionStart hook injects the Golden Rules and warns
   when the superpowers prerequisite isn't installed (it accepts a plugin install or a skills-CLI install
-  in `~/.claude/skills/` or project `.claude/skills/`).
+  in `~/.claude/skills/` or project `.claude/skills/`), and when EGM isn't (plugin install only, keyed
+  `egm@egm`, because its reviewer agents don't travel with the skills CLI).
   - `hooks/gate.py` (PreToolUse) is the one-shot karpathy and review gate for the main session, plus an
     always-on deny of a subagent's named Agent spawn, off with `HENGLIUU_GATES=off`.
   - `hooks/map_gate.py` is its subagent-only sibling: per file, a large source file is read through

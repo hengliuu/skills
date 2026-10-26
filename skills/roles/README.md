@@ -44,7 +44,7 @@ Before an Agent call to a role or a project agent, `hooks/dispatch_check.py` add
 
 ## Requires
 
-Claude Code 2.1.296 or later, because the agents use `autoCompactWindow`. Also [superpowers](https://github.com/obra/superpowers), installed separately.
+Claude Code 2.1.296 or later, because the agents use `autoCompactWindow`. Also [superpowers](https://github.com/obra/superpowers) and [EGM](https://github.com/google/elephant-goldfish-model), installed separately.
 
 ## Tests
 
