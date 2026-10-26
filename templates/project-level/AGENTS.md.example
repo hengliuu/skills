@@ -23,7 +23,7 @@ on Claude Code, linked into the harness's global context everywhere else.
 Rules here override them for this repo only.
 
 - **Type safety is the priority.** No `any`, no redundant or duplicate code.
-- **New feature / behavior change → `brainstorming` first**, then `writing-plans` from superpowers.
+- **New feature / behavior change → `workflow-map` first.** It picks the design path: `brainstorming`, or EGM for a large feature.
 - **Stack skills:** `acme-api-patterns` for `services/*`, `acme-web-patterns` for `web/`
   (the team's own skills, installed per project).
 - Invoke skills proactively; the user shouldn't have to name them.

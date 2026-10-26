@@ -45,14 +45,17 @@ what is already in your hands.
 | What you have | Next | Produces |
 | --- | --- | --- |
 | A request from someone else — client, stakeholder, MoM, an incident | `intent-capture` | `intent/*.md`, then return here |
-| An idea, nothing written down | `brainstorming` | a design, and a spec if the work is architectural |
+| An idea or an accepted intent, no spec yet, and the [design path](#picking-the-design-path) is EGM | ask the human to run `egm-brainstorm`, then `egm-draft` | `docs/designs/<feature>.md`: the spec and its build steps in one file |
+| An idea or an accepted intent, no spec yet, any other design path | `brainstorming` | a design, and a spec if the work is architectural |
 | An FSD, URS or PRD (from the client or a product owner) | treat it as an architecture you already have, row below | a spec only for the parts the document leaves open |
 | An architecture or design you already made | validate it against the codebase, then `writing-plans` | a plan |
-| A spec, freshly written | `grill-me` | the same spec, with its weak decisions found |
-| A spec that has been approved | `writing-plans`, ending in the [task table](references/task-table.md) | a plan |
+| A spec (not an EGM doc), freshly written | `grill-me` | the same spec, with its weak decisions found |
+| An EGM design doc, freshly drafted | ask the human to run `egm-review`, then `egm-resolve` | the same doc, reviewed by zero-context subagents, status `proposed` |
+| A spec (not an EGM doc) that has been approved | `writing-plans`, ending in the [task table](references/task-table.md) | a plan |
+| An EGM design doc that has been approved | add the [task table](references/task-table.md) after its build steps, and the doc is the plan | a plan |
 | A plan that has been approved | pick a tier, below, from its task table | working code |
-| Code finished, nobody has looked at it | `requesting-code-review` | findings |
-| A worker's branch waiting for a human | `requesting-code-review` by the human | approve, or a repair |
+| Code finished, nobody has looked at it | the `reviewer` role (`role-reviewer`) | findings |
+| A worker's branch waiting for a human | the `reviewer` role, then the human approves | approve, or a repair |
 | Review findings in hand | `receiving-code-review` | fixes, or a reasoned rebuttal |
 | Work verified, nothing committed | `commit-group` | atomic commits |
 | None of these rows | ask the user what they have | — |
@@ -73,6 +76,26 @@ If it holds, go to `writing-plans` and don't redo the thinking. If part of it do
 survive contact, take **that part** back to `brainstorming` and leave the rest standing.
 Planning around a design that quietly stopped being true is more expensive than the
 check, and starting over insults work that was mostly right.
+
+## Picking the design path
+
+Two design paths exist, and the size of the work picks one. EGM (the Elephant-Goldfish
+Model plugin) has zero-context subagents review the spec from several angles, which
+catches what a model reviewing its own draft agrees with. That costs several subagent
+runs per feature, so it pays only where a wrong design is expensive. This is a
+[decision point](#decision-points). The evidence is the request or intent, the modules it
+touches, and whether the `egm-*` skills are listed in this session. Stop at the first row
+that fits.
+
+| The work | Design path |
+| --- | --- |
+| Any size, but EGM is not installed | `brainstorming`, and say EGM is missing |
+| Large or costly to get wrong: a new subsystem, a data model or money change, several modules, hard to reverse | EGM |
+| Anything smaller, including a routine bugfix | `brainstorming` |
+
+EGM's skills set `disable-model-invocation`, so only the human can start them. The EGM
+path is a hand-off: name the next EGM skill and wait. Its reviewer subagents inherit the
+session's model, so suggest running `egm-review` in a Sonnet session when cost matters.
 
 ## Picking an execution tier
 
@@ -126,7 +149,7 @@ Each one hands the decision back to a human instead of looping:
 | Stage | Stop and escalate when | Hand back |
 | --- | --- | --- |
 | Intent | The success measure can't be stated, or the requester can't be asked | The open questions, not a guessed intent |
-| Design | The same decision is still open after two rounds of `grill-me` | That decision, as options with trade-offs |
+| Design | The same decision is still open after two rounds of `grill-me` or `egm-review` | That decision, as options with trade-offs |
 | Plan | A task can't be given a checkable result | That part, back to design. The rest of the plan stands |
 | Execution | A task fails verification three times, or an assumption in the plan proves false | The failure evidence, and the plan change it implies (`systematic-debugging` if the cause is unknown) |
 | Review | The same finding comes back after two fix rounds | The finding, and why the fixes didn't hold |
@@ -139,7 +162,9 @@ more expensive and harder to read.
 
 `brainstorming` classifies design depth itself — spike, bounded, or architectural — and
 only architectural work writes a spec file. Route to it and let it make that call; two
-classifiers competing over the same decision is worse than either alone.
+classifiers competing over the same decision is worse than either alone. The
+[design path](#picking-the-design-path) pick is a different decision: it only chooses
+between EGM and `brainstorming`, and each path then sets its own depth.
 
 Same for the stack skills: they own what correct code looks like here. This map only
 says when it is their turn.
@@ -217,3 +242,7 @@ with no record of what forced it.
 Check a shipped intent's success measure on the date it names. Hitting it closes the
 intent. Missing it is itself a new intent, and the number to put in it is already
 written down.
+
+Where the repo holds EGM design docs, `egm-drift-report` compares them with the live
+code. Suggest it weekly rather than per commit, because it runs subagents. Each
+divergence is the human's call: fix the code, or update the doc.

@@ -30,6 +30,7 @@ plan, diff, review findings — is the audit trail. Nothing here lives in a chat
   │ 2. DESIGN  │   requirements and design collapse into one session
   └─────┬──────┘
         │  commit ▸ docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md
+        │           or docs/designs/<feature>.md for a large feature (EGM)
         ▼
    ◆ GATE ── requester approves the spec; policy concerns go to their owners
         │
@@ -90,11 +91,11 @@ Two things in it matter to people, not only to agents:
 | Stage | Artifact | What we use |
 | --- | --- | --- |
 | 1 Plan | `intent/` | `intent-capture` |
-| 2 Design | spec | `brainstorming`, then `grill-me` on the spec before approving it |
-| 3 Build | plan | `writing-plans`; plan status written back to the file; the project's own conventions carry the standard |
+| 2 Design | spec | `brainstorming`, then `grill-me` on the spec before approving it. A large feature goes through EGM instead: `egm-brainstorm`, `egm-draft`, `egm-review`, `egm-resolve` |
+| 3 Build | plan | `writing-plans`; plan status written back to the file; the project's own conventions carry the standard. On the EGM path, the approved design doc plus a task table is the plan |
 | 4 Test | verified output | `test-driven-development`, `verification-before-completion` |
-| 5 Deploy | diff, PR, findings | `requesting-code-review`, `receiving-code-review`, `role-reviewer`, `/commit-group` |
-| 6 Maintain | a new intent | `intent-capture` again |
+| 5 Deploy | diff, PR, findings | `role-reviewer`, `receiving-code-review`, `/commit-group` |
+| 6 Maintain | a new intent | `intent-capture` again, and `egm-drift-report` weekly where EGM design docs exist |
 
 Third-party skills in that table install separately. See the install guide's
 [Recommended community skills](docs/install.md#recommended-community-skills).
@@ -124,6 +125,15 @@ step 7 is a self-review, and a model that just wrote a document is poor at audit
 it checks for placeholders and contradictions, never for whether a decision was right.
 An adversarial pass is what catches that.
 
+A large feature, one that is costly to get wrong, takes the EGM path instead. EGM (the
+[Elephant-Goldfish Model](https://github.com/google/elephant-goldfish-model)) drafts one
+design doc that holds the spec and its build steps, then has zero-context subagents review
+it from several angles: simplicity, a newcomer's reading, design and scale, and whether a
+model could build it without guessing. That review is the adversarial pass, done by
+reviewers who never saw the conversation. It costs several subagent runs per feature, so
+smaller work stays on `brainstorming`. `workflow-map` makes the size call. EGM's skills
+start only when you run them, so on this path the agent tells you which one is next.
+
 ## Stage 3 — Build
 
 **The plan file on disk is the source of truth for progress.** Upstream
@@ -142,7 +152,7 @@ true — invoke it when a plan is approved and it will make the call.
 This is where the bottleneck actually is, so it gets the attention that used to go into
 writing code faster.
 
-- `requesting-code-review` before declaring work done, not after.
+- The `reviewer` role (`role-reviewer`) before declaring work done, not after.
 - `receiving-code-review` when findings land: fix it or argue it, never silently drop it.
 - Review against **the project's own conventions**: its `AGENTS.md` and any stack skills it
   names. That is the standard, and generic taste is not.
@@ -165,7 +175,8 @@ Open, in order of what unblocks what:
 - **Stage 6 has a rule and nothing that notices.** An incident, a breached SLO, or a
   missed success measure is routed back to `intent-capture`. Nothing watches, though:
   no alert opens the file and no date pulls the measure, so the loop closes only when
-  a person remembers to close it.
+  a person remembers to close it. `egm-drift-report` covers one slice of this, code that
+  drifted from its design doc, but only when someone runs it.
 - **`REVIEW.md`** — a review policy as an artifact (which passes run, severity levels,
   what to skip). Cheapest thing left on this list.
 - **Deploy gates** — the playbook uses a hook exiting 2 to hold a release until an

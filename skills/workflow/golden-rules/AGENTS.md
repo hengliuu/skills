@@ -18,8 +18,9 @@ report failures with their output.
 
 ## Review — this is where the bottleneck is
 
-Generation is cheap; review costs human time, so spend the effort there. Invoke
-`requesting-code-review` before declaring work done, and `receiving-code-review` when
+Generation is cheap; review costs human time, so spend the effort there. Dispatch the
+`reviewer` role (`role-reviewer`) before declaring work done, or invoke `requesting-code-review`
+on a harness without subagents, and `receiving-code-review` when
 findings come back — fix it or argue it, never silently drop it. Review against the
 project's own standard, its `AGENTS.md` and any stack skills it names, rather than generic taste.
 

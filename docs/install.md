@@ -54,17 +54,26 @@ answer, or doesn't know it, has not loaded the file.
    `-a` picks the harness (`claude-code`, `opencode`, `codex`, `gemini-cli`, `antigravity`,
    `kiro-cli` and more, or `-a '*'` for all), `-g` installs user-level rather than into the current
    project.
-2. **Add this marketplace.**
+2. **Install EGM** (mandatory: the plugin warns at session start if it's missing). Keep
+   superpowers as well: EGM covers the design stage of large features and stops at the
+   approved design doc. Install it as a plugin, because its reviewer agents and the files
+   its skills read only come with the plugin, so `npx skills` is not enough:
+   ```
+   /plugin marketplace add google/elephant-goldfish-model
+   /plugin install egm@egm
+   ```
+   EGM's skills start only when you run them yourself (`egm-draft` and the rest).
+3. **Add this marketplace.**
    ```
    /plugin marketplace add hengliuu/skills
    ```
    It registers as **`hengliuu`**, the name in `marketplace.json`. The install commands
    below use that name.
-3. **Install the plugin.** It carries the skills, the agent roles and the hooks, and it is what loads the global context:
+4. **Install the plugin.** It carries the skills, the agent roles and the hooks, and it is what loads the global context:
    ```
    /plugin install hengliuu-skills@hengliuu
    ```
-4. **Verify.** Open a new session and run the check in
+5. **Verify.** Open a new session and run the check in
    [Global context](#global-context-mandatory). Skills appear namespaced, e.g.
    `hengliuu-skills:karpathy-guidelines`.
 
@@ -74,7 +83,7 @@ to symlink, and it works the same on macOS, Linux and Windows.
 ## Setup on other harnesses
 
 opencode, Codex, Gemini CLI, Antigravity, Kiro and the rest install the skills with the
-same CLI and update with one command. The only manual part is step 3, the global
+same CLI and update with one command. The only manual part is step 4, the global
 context, because no other harness has a hook that can inject it.
 
 1. **Install superpowers** (mandatory). Swap `opencode` for your harness: `codex`,
@@ -82,7 +91,12 @@ context, because no other harness has a hook that can inject it.
    ```
    npx skills@latest add obra/superpowers -a opencode -g
    ```
-2. **Install the skills.**
+2. **Install EGM where your harness supports it.** Codex:
+   `codex plugin marketplace add google/elephant-goldfish-model`, then
+   `codex plugin add egm@egm`. Antigravity:
+   `agy plugin install https://github.com/google/elephant-goldfish-model`. On a harness EGM
+   does not list, `workflow-map` keeps large features on `brainstorming`.
+3. **Install the skills.**
    ```
    npx skills@latest add hengliuu/skills -a opencode -g
    ```
@@ -92,12 +106,12 @@ context, because no other harness has a hook that can inject it.
    harness the CLI detects. Skills land in `~/.agents/skills/`, and each harness gets a
    symlink to that one copy.
 
-3. **Load the global context.** Follow your harness in
+4. **Load the global context.** Follow your harness in
    [the next section](#load-the-global-context-per-harness). Don't skip it: without it
    the skills install, but the rules never load.
-4. **Verify.** Open a new session and run the check in
+5. **Verify.** Open a new session and run the check in
    [Global context](#global-context-mandatory).
-5. **New repos:** start the project's `AGENTS.md` from
+6. **New repos:** start the project's `AGENTS.md` from
    [`templates/project-level/AGENTS.md`](../templates/project-level/AGENTS.md) (`AGENTS.md.example` shows one filled in)..
 
 The skills are plain markdown and run anywhere.
@@ -257,6 +271,7 @@ on whatever harness you use: add `-a <harness>` to target one other than Claude 
 | Skill | What it does | Install |
 |---|---|---|
 | **superpowers** | Required. Plan, brainstorm, TDD and review workflows. These skills layer on top and warn at session start if missing | `npx skills@latest add obra/superpowers -a claude-code -g` |
+| **EGM** | Required on Claude Code. Zero-context subagents review the design of a large feature before any code is written, and drift reports compare design docs with the code later. Plugin only, not the skills CLI. Apache 2.0, created at Google, not an officially supported Google product | `/plugin marketplace add google/elephant-goldfish-model` then `/plugin install egm@egm` |
 | **grill-me** | Adversarial interview that stress-tests a spec before it becomes a plan. Run it on the spec, then go to `writing-plans` | `npx skills@latest add mattpocock/skills --skill grill-me grilling` |
 | **graphify** | Knowledge graph for everything that is **not** code: docs, papers, PDFs, images, SQL schemas, configs. Reads code too, but `graft` is the recommended default there | `pip install graphifyy && graphify install` |
 | **graft** | Codebase map (optional), code only, but it wires its own Claude Code hooks and statusline. Younger and less proven. Telemetry is opt-**out**: run `graft telemetry disable` (or set `DO_NOT_TRACK=1`) before using it on private code | `npm install -g @nanonets/graft` then `graft init && graft build` |
@@ -281,9 +296,9 @@ on whatever harness you use: add `-a <harness>` to target one other than Claude 
 
 **Claude Code with the plugin, and the rules still don't load:** run `/plugin` and check
 that `hengliuu-skills` is installed and enabled, then start a new session. The plugin's
-SessionStart hook also warns if superpowers is missing.
+SessionStart hook also warns if superpowers or EGM is missing.
 
-**A skill warns that a skill is missing at session start** (superpowers):
+**A skill warns that a skill is missing at session start** (superpowers or EGM):
 install the one it names. The commands are in
 [Recommended community skills](#recommended-community-skills).
 

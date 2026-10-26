@@ -3,7 +3,9 @@
 A plan ends in one table. It is what makes the [execution tier](../SKILL.md#picking-an-execution-tier)
 a lookup instead of a guess, and it is what an orchestrator dispatches from. `writing-plans`
 (superpowers) does not write it on its own, so ask for it when the plan is written, and add
-it to an approved plan that lacks one before picking a tier.
+it to an approved plan that lacks one before picking a tier. `egm-draft` does not write it
+either: on the EGM path, add it after the approved design doc's build steps, and that doc is
+the plan.
 
 ## Format
 

@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat \"${CLAUDE_PLUGIN_ROOT}/skills/workflow/golden-rules/AGENTS.md\"; { grep -qs superpowers \"$HOME/.claude/plugins/installed_plugins.json\" || [ -d \"$HOME/.claude/skills/using-superpowers\" ] || [ -d \".claude/skills/using-superpowers\" ]; } || printf '\\n⚠️ MISSING PREREQUISITE: superpowers is not installed. these skills layer on top of it. Tell the user to run:\\n  npx skills@latest add obra/superpowers -a claude-code -g\\n(-a takes any supported harness: claude-code, kiro-cli, opencode, zcode, cursor, …)\\n'"
+            "command": "cat \"${CLAUDE_PLUGIN_ROOT}/skills/workflow/golden-rules/AGENTS.md\"; { grep -qs superpowers \"$HOME/.claude/plugins/installed_plugins.json\" || [ -d \"$HOME/.claude/skills/using-superpowers\" ] || [ -d \".claude/skills/using-superpowers\" ]; } || printf '\\n⚠️ MISSING PREREQUISITE: superpowers is not installed. these skills layer on top of it. Tell the user to run:\\n  npx skills@latest add obra/superpowers -a claude-code -g\\n(-a takes any supported harness: claude-code, kiro-cli, opencode, zcode, cursor, …)\\n'; grep -qs '\"egm@egm\"' \"$HOME/.claude/plugins/installed_plugins.json\" || printf '\\n⚠️ MISSING PREREQUISITE: EGM is not installed. workflow-map routes large features to its design review. Tell the user to run:\\n  claude plugin marketplace add google/elephant-goldfish-model\\n  claude plugin install egm@egm\\n'"
           }
         ]
       },

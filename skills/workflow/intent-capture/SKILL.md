@@ -76,7 +76,7 @@ spending one of the requester's questions on it.
 ## Output
 
 Write to `intent/YYYY-MM-DD-<requester-or-client>-<topic>.md` in the project repo —
-not under `docs/superpowers/`, which holds what *you* decided rather than what *they*
+not under `docs/superpowers/` or `docs/designs/`, which hold what *you* decided rather than what *they*
 asked. Create the folder if it doesn't exist.
 
 ```markdown
@@ -121,8 +121,9 @@ Show the file and ask the requester to correct it — they own it, you only held
 Their edits are the point, not a sign you got it wrong.
 
 `Status: draft` → `accepted` is theirs to flip, and that flip is the gate: no design
-work starts before it. Once accepted, commit the file and hand off to `brainstorming`,
-which turns an accepted intent into a spec.
+work starts before it. Once accepted, commit the file and hand off to `workflow-map`,
+which picks the design path (`brainstorming`, or EGM for a large feature) that turns an
+accepted intent into a spec.
 
 ## Reviewing an existing intent
 
