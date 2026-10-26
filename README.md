@@ -110,7 +110,7 @@ skills you choose. These skills own the process around the code, not the code st
 ```
 .claude-plugin/   marketplace and plugin manifests
 skills/           workflow, engineering and roles, one folder per skill
-agents/           the five role agents for Claude Code
+agents/           the six role agents for Claude Code
 hooks/            session-start rules, gates and their tests
 templates/        a starter AGENTS.md for your own projects
 ```

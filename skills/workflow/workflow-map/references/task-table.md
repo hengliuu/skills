@@ -20,7 +20,7 @@ it to an approved plan that lacks one before picking a tier.
   one when it reads that task's output or builds on its code.
 - **Files it writes:** paths or globs. This is what decides whether two tasks can run at once.
   Read-only tasks write `none`.
-- **Role:** `worker`, `chore`, `designer`, `reviewer`, `product`, or a project agent that the
+- **Role:** `worker`, `chore`, `designer`, `reviewer`, `product`, `project-manager`, or a project agent that the
   project's `AGENTS.md` names. Use `chore` only when the change is already decided and only
   has to be applied. Without the roles installed, write the role anyway: it still tells a
   solo run which tasks need judgment.
