@@ -50,9 +50,10 @@ what is already in your hands.
 | An FSD, URS or PRD (from the client or a product owner) | treat it as an architecture you already have, row below | a spec only for the parts the document leaves open |
 | An architecture or design you already made | validate it against the codebase, then `writing-plans` | a plan |
 | A spec (not an EGM doc), freshly written | `grill-me` | the same spec, with its weak decisions found |
-| An EGM design doc, freshly drafted | ask the human to run `egm-review`, then `egm-resolve` | the same doc, reviewed by zero-context subagents, status `proposed` |
+| An EGM design doc with status `Draft` or `In Review` | ask the human to run `egm-review`, then `egm-resolve` | the same doc, reviewed by zero-context subagents. Set its status to `Proposed` |
 | A spec (not an EGM doc) that has been approved | `writing-plans`, ending in the [task table](references/task-table.md) | a plan |
-| An EGM design doc that has been approved | add the [task table](references/task-table.md) after its build steps, and the doc is the plan | a plan |
+| An EGM design doc with status `Proposed` | a pull request with the doc, for a human to review before any code | the doc, approved or sent back |
+| An EGM design doc with status `Approved`, set when a human approves its pull request | add the [task table](references/task-table.md) after its build steps, and the doc is the plan | a plan |
 | A plan that has been approved | pick a tier, below, from its task table | working code |
 | Code finished, nobody has looked at it | the `reviewer` role (`role-reviewer`) | findings |
 | A worker's branch waiting for a human | the `reviewer` role, then the human approves | approve, or a repair |
@@ -96,6 +97,11 @@ that fits.
 EGM's skills set `disable-model-invocation`, so only the human can start them. The EGM
 path is a hand-off: name the next EGM skill and wait. Its reviewer subagents inherit the
 session's model, so suggest running `egm-review` in a Sonnet session when cost matters.
+EGM registers each new doc in `docs/designs/SITEMAP.md`, but only if that file exists, so
+offer to create it the first time a project takes this path.
+
+EGM's review is not the approval. Its reviewers find gaps, and a human still approves the
+doc through a pull request, as EGM itself prescribes.
 
 ## Picking an execution tier
 
@@ -151,7 +157,7 @@ Each one hands the decision back to a human instead of looping:
 | Intent | The success measure can't be stated, or the requester can't be asked | The open questions, not a guessed intent |
 | Design | The same decision is still open after two rounds of `grill-me` or `egm-review` | That decision, as options with trade-offs |
 | Plan | A task can't be given a checkable result | That part, back to design. The rest of the plan stands |
-| Execution | A task fails verification three times, or an assumption in the plan proves false | The failure evidence, and the plan change it implies (`systematic-debugging` if the cause is unknown) |
+| Execution | A task fails verification three times, or an assumption in the plan proves false | The failure evidence, and the plan change it implies (`systematic-debugging` if the cause is unknown). When the change is to the design rather than a code fix, on the EGM path it goes into the design doc first, then the build reruns from it |
 | Review | The same finding comes back after two fix rounds | The finding, and why the fixes didn't hold |
 | Any loop | `loop-discipline`'s cap or stall exit fires | What the loop achieved, and why it stalled |
 

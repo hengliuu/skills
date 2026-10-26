@@ -1,0 +1,32 @@
+name: release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Rule 2 bumps the version by hand in both manifests, so the manifest is the source of
+      # truth: a version without a release gets one, and a mismatch fails instead of guessing.
+      - name: Release the manifest version if it has no release yet
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          v=$(python3 -c "import json; print(json.load(open('.claude-plugin/plugin.json'))['version'])")
+          m=$(python3 -c "import json; print(json.load(open('.claude-plugin/marketplace.json'))['metadata']['version'])")
+          if [ "$v" != "$m" ]; then
+            echo "plugin.json is $v but marketplace.json is $m"
+            exit 1
+          fi
+          if gh release view "v$v" >/dev/null 2>&1; then
+            echo "v$v already released"
+            exit 0
+          fi
+          gh release create "v$v" --target "$GITHUB_SHA" --title "v$v" --generate-notes
