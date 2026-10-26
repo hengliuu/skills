@@ -2,7 +2,7 @@
 
 Portable agent roles for one way of working: a main session (the orchestrator) runs a batch of independent tasks with unnamed subagents, one worktree and branch each, and assembles the batch by cherry-pick.
 
-Role behaviour lives in skills, so it travels to any harness through the skills CLI. On Claude Code, five thin agents in [`agents/`](../../agents) preload those skills and set each role's model and effort. The role skills set `user-invocable: false` and say in their descriptions that they load only when dispatched, so an ordinary session does not pick them up.
+Role behaviour lives in skills, so it travels to any harness through the skills CLI. On Claude Code, six thin agents in [`agents/`](../../agents) preload those skills and set each role's model and effort. The role skills set `user-invocable: false` and say in their descriptions that they load only when dispatched, so an ordinary session does not pick them up.
 
 | Skill | What it does |
 | --- | --- |
@@ -13,6 +13,7 @@ Role behaviour lives in skills, so it travels to any harness through the skills 
 | [role-designer](role-designer/SKILL.md) | Writes specs, boards, investigations, root-cause hunts and audits. |
 | [role-reviewer](role-reviewer/SKILL.md) | Reviews one branch read-only through the project's lenses, or generic ones when it names none. |
 | [role-product](role-product/SKILL.md) | Answers positioning, pricing, onboarding and launch questions and reviews copy that workers invented. |
+| [role-project-manager](role-project-manager/SKILL.md) | Structures and syncs the tracker: epic, story per requirement and sub-task hierarchy, workflow states and their groups, Definition of Done, status from evidence, bulk changes after approval. |
 
 ## Agents (Claude Code only)
 
@@ -23,6 +24,7 @@ Role behaviour lives in skills, so it travels to any harness through the skills 
 | `hengliuu-skills:designer` | opus | high | `role-base`, `role-designer`, `karpathy-guidelines` |
 | `hengliuu-skills:reviewer` | opus | high | `role-reviewer`, `karpathy-guidelines`, with tools limited to `Read, Grep, Glob, Bash, Skill` |
 | `hengliuu-skills:product` | opus | medium | `role-product` |
+| `hengliuu-skills:project-manager` | opus | medium | `role-project-manager` |
 
 The reviewer is read-only by instruction. It has Bash, so the role skill tells it to change nothing.
 

@@ -1,6 +1,6 @@
 ---
 name: role-orchestrator
-description: Run a batch of independent tasks with agents — split the work, create one worktree and branch per task, pick each task's role (worker, chore, designer, reviewer, product, or a project agent), model and effort, dispatch unnamed subagents, batch their questions to the human, review, and assemble the batch by cherry-pick. Use when the main session coordinates several agents over a backlog or a release batch ("dispatch these to workers", "run this batch", "jalanin batch ini pakai agent", "orchestrate the fixes"). Not for a dispatched agent, and not for a solo plan (executing-plans).
+description: Run a batch of independent tasks with agents — split the work, create one worktree and branch per task, pick each task's role (worker, chore, designer, reviewer, product, project-manager, or a project agent), model and effort, dispatch unnamed subagents, batch their questions to the human, review, and assemble the batch by cherry-pick. Use when the main session coordinates several agents over a backlog or a release batch ("dispatch these to workers", "run this batch", "jalanin batch ini pakai agent", "orchestrate the fixes"). Not for a dispatched agent, and not for a solo plan (executing-plans).
 ---
 
 # Role orchestrator
@@ -23,6 +23,7 @@ or `subagent-driven-development`; `workflow-map` makes that call.
 | **designer** | Specs, boards, investigations, root-cause hunts, audits | Ship behaviour without a test; decide product calls |
 | **reviewer** | Read-only review of a branch through the project's lenses | Edit, commit, check out in shared folders, run heavy suites |
 | **product** | Positioning, pricing, onboarding, launch, copy review; one recommendation | Write code; cite terms from memory |
+| **project-manager** | Tracker structure and sync: story per requirement, states by group, Definition of Done, status from evidence, bulk changes after approval | Write code or specs; set a status without evidence; change the tracker before the human approves the change list |
 
 The project's `AGENTS.md` (Agents section) names which roles it uses, which project agent
 takes which domain, the checks, locks, reviewer lenses and triggers, and its concurrency
@@ -42,6 +43,7 @@ pick goes to the human with both candidates.
 | Spec, board, audit, architecture | designer | high (medium for an investigation with no visual output) |
 | Branch before merge, touching what the project's review triggers name | reviewer | high |
 | Copy or positioning question | product | medium |
+| Tracker structure, backlog reconciliation, status sync from evidence | project-manager | medium |
 | A task inside a domain the project maps to its own agent | that project agent | its own |
 
 Models per role, per harness, are in [references/model-map.md](references/model-map.md).
@@ -60,7 +62,7 @@ Change a model only per call, and say why in the batch notes.
    conversation:
 
 ```
-Role: <worker | chore | designer | reviewer | product | project agent>
+Role: <worker | chore | designer | reviewer | product | project-manager | project agent>
 Worktree: <absolute path>   Branch: <branch>   Base: <sha>
 Scratch: <scratchpad>/<branch-slug>/
 Resources: <port, lock, runner, or "none">
