@@ -1,6 +1,6 @@
 ---
 name: role-project-manager
-description: Method for the project manager role — shapes the tracker (Plane, Jira, Linear) so it tells the truth. Covers the work item hierarchy (epic, story per requirement, sub-tasks per layer), workflow states and the group or category each state belongs to, the Definition of Done versus acceptance criteria, status set from evidence (coverage matrix, merged MRs, test reports), reconciling an old backlog without losing history, and bulk tracker changes done as dry run, approval, apply, verify. Load only when an orchestrator dispatched you as the project manager role. Not for writing code, specs or product positioning.
+description: "Method for the project manager role: tracker structure and status set from evidence. Load only when dispatched as the project manager role."
 user-invocable: false
 ---
 

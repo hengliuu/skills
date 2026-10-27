@@ -90,10 +90,12 @@ skills, context, hooks and manifests. Read `README.md` for what's inside and how
    `hengliuu-skills:` name. Before editing it, diff upstream and take what it added since.
 4. **`golden-rules/AGENTS.md` is the single source of truth** for team working
    style, and it is **injected into every session** — so it is an instruction budget, not a knowledge
-   base. The budget is attention, not line count: frontier models follow roughly
-   150–200 instructions before adherence degrades (smaller models decay faster), and
-   Claude Code's own system prompt already spends part of that. Judge a line by what it
-   changes, not by how much room is left. Rules for what belongs:
+   base. The budget is attention, not line count: adherence drops as instructions pile up,
+   and the shape differs by model, some holding until a threshold and others declining from
+   the start ([IFScale](https://arxiv.org/abs/2507.11538), measured on 2025 models).
+   Anthropic's guide for current models adds that a long system prompt makes Haiku 5.5 stop
+   early, and Claude Code's own system prompt already spends part of the budget. Judge a
+   line by what it changes, not by how much room is left. Rules for what belongs:
    - Every rule must earn its place in a session that does **not** trigger it. A rule
      that only applies to one workflow belongs in that workflow's skill.
    - State the trigger and the **why**, then point at the skill for the mechanics.
@@ -108,6 +110,9 @@ skills, context, hooks and manifests. Read `README.md` for what's inside and how
    - Cut persuasion. An argument for why a tool is worth installing changes nothing in
      a session where the tool is absent, and costs attention in every session where it
      is present. That argument belongs in README.
+   - Write a rule calmly, as a condition and its reason. Current Claude models over-trigger
+     on "CRITICAL" and "MUST" phrasing ([Anthropic's prompting guide](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)),
+     and a rule that has to hold every time belongs in a hook, not in capitals.
 5. **Keep JSON valid** — after editing any manifest: `python3 -m json.tool <file>`.
 6. **Plugin skills follow the standard SKILL.md format**: frontmatter `name` +
    trigger-rich `description`, body kept lean, details in `references/*.md` loaded

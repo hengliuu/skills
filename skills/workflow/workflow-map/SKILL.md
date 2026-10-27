@@ -1,14 +1,15 @@
 ---
 name: workflow-map
 description: >
-  The map of how a piece of work travels from request to merged commit, and which
-  skill owns each stage. Invoke it when you are about to start something and the path
-  isn't obvious, when a stage just finished and you need the handoff, or when you have
-  a spec, an architecture, a plan or a set of review findings already in hand and need
-  to know where that lands. Triggers on "mulai dari mana", "gimana alurnya", "next
-  step apa", "ini lanjut ke apa", a client or stakeholder request arriving, or any
-  question about which skill to use for a stage. Consult it instead of firing several
-  workflow skills and seeing which fits.
+  Picks the path for a piece of work before anyone designs or builds it: the design
+  route by size (EGM for large or costly work, brainstorming for the rest), the stage
+  you are at, the skill that runs next, and how an approved plan executes. Use it when
+  the user asks for a new feature, a behavior change or a client request ("bikin fitur",
+  "tambahin", "implement", "ubah flow", "klien minta"), before brainstorming or planning
+  it. Also use it when a stage just finished and needs its handoff, when a spec, a plan
+  or review findings are already in hand, or on "mulai dari mana", "next step apa", "ini
+  lanjut ke apa". Skip it for a question, a one-line fix whose cause is known, or a task
+  inside a plan that is already running.
 ---
 
 # Workflow map
@@ -45,12 +46,12 @@ what is already in your hands.
 | What you have | Next | Produces |
 | --- | --- | --- |
 | A request from someone else — client, stakeholder, MoM, an incident | `intent-capture` | `intent/*.md`, then return here |
-| An idea or an accepted intent, no spec yet, and the [design path](#picking-the-design-path) is EGM | ask the human to run `egm-brainstorm`, then `egm-draft` | `docs/designs/<feature>.md`: the spec and its build steps in one file |
+| An idea or an accepted intent, no spec yet, and the [design path](#picking-the-design-path) is EGM | ask the human to run `egm-brainstorm`, then `egm-draft` (a medium feature whose idea is already clear starts at `egm-draft`) | `docs/designs/<feature>.md`: the spec and its build steps in one file |
 | An idea or an accepted intent, no spec yet, any other design path | `brainstorming` | a design, and a spec if the work is architectural |
 | An FSD, URS or PRD (from the client or a product owner) | treat it as an architecture you already have, row below | a spec only for the parts the document leaves open |
 | An architecture or design you already made | validate it against the codebase, then `writing-plans` | a plan |
 | A spec (not an EGM doc), freshly written | `grill-me` | the same spec, with its weak decisions found |
-| An EGM design doc with status `Draft` or `In Review` | ask the human to run `egm-review`, then `egm-resolve` | the same doc, reviewed by zero-context subagents. Set its status to `Proposed` |
+| An EGM design doc with status `Draft` or `In Review` | ask the human to run `egm-review` (every stage for a large feature, stages 5 and 9 for a medium one), then `egm-resolve` | the same doc, reviewed by zero-context subagents. Set its status to `Proposed` |
 | A spec (not an EGM doc) that has been approved | `writing-plans`, ending in the [task table](references/task-table.md) | a plan |
 | An EGM design doc with status `Proposed` | a pull request with the doc, for a human to review before any code | the doc, approved or sent back |
 | An EGM design doc with status `Approved`, set when a human approves its pull request | add the [task table](references/task-table.md) after its build steps, and the doc is the plan | a plan |
@@ -82,17 +83,26 @@ check, and starting over insults work that was mostly right.
 
 Two design paths exist, and the size of the work picks one. EGM (the Elephant-Goldfish
 Model plugin) has zero-context subagents review the spec from several angles, which
-catches what a model reviewing its own draft agrees with. That costs several subagent
-runs per feature, so it pays only where a wrong design is expensive. This is a
+catches what a model reviewing its own draft agrees with. Each review stage costs
+subagent runs, so the full review pays only where a wrong design is expensive, and a
+medium feature takes the two stages that matter most for it. This is a
 [decision point](#decision-points). The evidence is the request or intent, the modules it
-touches, and whether the `egm-*` skills are listed in this session. Stop at the first row
-that fits.
+touches, and whether EGM is installed. Its skills are human-only, so they never appear in
+your skill list: look for its reviewer agents (`egm-design`, `egm-zoom-out` and the rest)
+among the available agent types, or for a session-start note that it is missing, and ask
+when neither tells. Stop at the first row that fits.
 
 | The work | Design path |
 | --- | --- |
 | Any size, but EGM is not installed | `brainstorming`, and say EGM is missing |
-| Large or costly to get wrong: a new subsystem, a data model or money change, several modules, hard to reverse | EGM |
-| Anything smaller, including a routine bugfix | `brainstorming` |
+| Large or costly to get wrong: a new subsystem, a data model or money change, several modules, hard to reverse | EGM, full review (stages 5 to 9) |
+| Medium: a new feature or a user-visible behavior change inside one module | EGM, `egm-draft` (with `egm-brainstorm` first only if the idea is still vague), then `egm-review` stages 5 and 9 |
+| Anything smaller: a routine bugfix, a refactor, a small tweak | `brainstorming` |
+
+The medium path keeps stage 5 (one zoom-out reviewer, which catches over-design) and stage
+9 (implementation readiness, which checks that a model can build the doc without guessing,
+the outcome EGM exists for). Stages 6 to 8 pay off on docs that many people will read, which
+is what makes a feature large.
 
 EGM's skills set `disable-model-invocation`, so only the human can start them. The EGM
 path is a hand-off: name the next EGM skill and wait. Its reviewer subagents inherit the

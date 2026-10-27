@@ -33,10 +33,11 @@ author.
 
 ## Starting a piece of work, or handing off a finished stage
 
-Invoke `workflow-map` when the next step isn't obvious. It holds the stage-to-skill
-table, the execution-tier decision, and where a spec, an architecture or a plan you
-already hold actually lands — one map, instead of firing workflow skills to see which
-fits.
+Invoke `workflow-map` when the user asks for a new feature or a behavior change, before
+brainstorming or planning it, and whenever the next step isn't obvious. It picks the
+design path by size, so starting straight at `brainstorming` sends large work past the
+design review it needs. It also holds the stage-to-skill table, the execution-tier
+decision, and where a spec, an architecture or a plan you already hold actually lands.
 
 When a plan is approved, invoke `workflow-map` before any execution: it reads the plan's task
 table and picks how the work runs. Every plan ends in that table (task, depends on, files,

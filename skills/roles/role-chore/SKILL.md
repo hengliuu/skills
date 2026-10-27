@@ -1,6 +1,6 @@
 ---
 name: role-chore
-description: Method for the chore role — a mechanical edit whose diff the instructions fully determine (rename, version bump, approved copy swap, regenerated file, lint fix, moving a file), followed by one named check, with a hard stop the moment the code does not match the instructions. Load only when an orchestrator dispatched you as the chore, together with role-base. Not for new logic, new tests, or any task that needs a judgment call.
+description: "Method for the chore role: a mechanical edit the instructions fully determine, then one named check. Load only when dispatched as the chore role."
 user-invocable: false
 ---
 
