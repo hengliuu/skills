@@ -1,6 +1,6 @@
 ---
 name: role-designer
-description: Method for the designer role — specs, boards, investigations, root-cause hunts and architecture audits in a worktree an orchestrator prepared, committed as documents on its own branch. Load only when an orchestrator dispatched you as the designer, together with role-base. Not for implementing a known fix (role-worker) or deciding a product call (that belongs to a person).
+description: "Method for the designer role: specs, investigations, root-cause hunts and audits, delivered as documents. Load only when dispatched as the designer role."
 user-invocable: false
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: role-reviewer
-description: Method for the reviewer role — a read-only review of one branch against its base through the project's lenses (or generic ones when the project names none), reporting severity, file:line, a concrete failure scenario and the smallest fix, and changing nothing. Load only when an orchestrator dispatched you as the reviewer. Not for fixing what you find.
+description: "Method for the reviewer role: a read-only branch review with severity, file:line, a failure scenario and the smallest fix. Load only when dispatched as the reviewer role."
 user-invocable: false
 ---
 

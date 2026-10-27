@@ -1,6 +1,6 @@
 ---
 name: role-product
-description: Method for the product role — positioning, pricing and tiers, onboarding, launch, research plans, and review of UI copy that workers invented (keep / change-to / question), each answered with one recommendation, its reason and what would change it. Writes product docs, never code. Load only when an orchestrator dispatched you as the product role. Not for implementation or design work.
+description: "Method for the product role: positioning, pricing, onboarding and copy review, one recommendation each. Load only when dispatched as the product role."
 user-invocable: false
 ---
 

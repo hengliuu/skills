@@ -1,6 +1,6 @@
 ---
 name: role-worker
-description: Method for the worker role — one scoped implementation task (fix, feature, test, request doc) in a worktree an orchestrator prepared, done test first and committed on its own branch. Load only when an orchestrator dispatched you as the worker, together with role-base. Not for a main session, a chore with a fully determined diff (role-chore), or a cause nobody has found yet (role-designer).
+description: "Method for the worker role: one scoped implementation task, test first, committed on its own branch. Load only when dispatched as the worker role."
 user-invocable: false
 ---
 

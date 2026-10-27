@@ -1,6 +1,6 @@
 ---
 name: role-base
-description: Shared contract for an agent that an orchestrator dispatched into a prepared worktree as the worker, chore or designer role — read the project first, stay in the worktree, keep scratch files and processes to yourself, stop and report instead of guessing, and end with the standard report. Load only when you were dispatched in one of those roles (their agent definitions preload it). Not for a main session working directly with a person.
+description: "Shared contract for every dispatched role (worker, chore, designer). Load only when an orchestrator dispatched you."
 user-invocable: false
 ---
 
