@@ -91,7 +91,7 @@ Two things in it matter to people, not only to agents:
 | Stage | Artifact | What we use |
 | --- | --- | --- |
 | 1 Plan | `intent/` | `intent-capture` |
-| 2 Design | spec | `brainstorming`, then `grill-me` on the spec before approving it. A large feature goes through EGM instead: `egm-brainstorm`, `egm-draft`, `egm-review`, `egm-resolve`, then a pull request for a human to approve |
+| 2 Design | spec | `brainstorming`, then `grill-me` on the spec before approving it. A large or medium feature goes through EGM instead: `egm-brainstorm`, `egm-draft`, `egm-review` (two stages for a medium one), `egm-resolve`, then a pull request for a human to approve |
 | 3 Build | plan | `writing-plans`; plan status written back to the file; the project's own conventions carry the standard. On the EGM path, the approved design doc plus a task table is the plan |
 | 4 Test | verified output | `test-driven-development`, `verification-before-completion` |
 | 5 Deploy | diff, PR, findings | `role-reviewer`, `receiving-code-review`, `/commit-group` |
@@ -131,7 +131,9 @@ design doc that holds the spec and its build steps, then has zero-context subage
 it from several angles: simplicity, a newcomer's reading, design and scale, and whether a
 model could build it without guessing. That review is the adversarial pass, done by
 reviewers who never saw the conversation. It costs several subagent runs per feature, so
-smaller work stays on `brainstorming`. `workflow-map` makes the size call. EGM's skills
+a medium feature (new, but inside one module) runs only two review stages: the zoom-out
+check for over-design, and the check that a model can build it without guessing. Bugfixes,
+refactors and small tweaks stay on `brainstorming`. `workflow-map` makes the size call. EGM's skills
 start only when you run them, so on this path the agent tells you which one is next.
 
 EGM's reviewers find gaps, but they do not approve. The design doc still goes to a human in
