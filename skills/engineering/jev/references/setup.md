@@ -59,7 +59,10 @@ more reliable than an exported variable.
 
 ### macOS
 
-Verified on the standalone version this skill came from, not yet on this plugin's layout. Without `setup`:
+Verified on this plugin at 1.6.0 on 2026-11-07, run from the installed plugin folder: the key check
+against the real TypeSafe endpoint, the router logging in an allowed folder and silent outside it,
+the done-check blocking an unverified claim, the session-start check silent, and the router on
+macOS's own `/usr/bin/python3` (3.9). Without `setup`:
 
 ```bash
 security add-generic-password -U -a "$USER" -s TYPESAFE_API_KEY -w   # prompts, never enters a transcript
