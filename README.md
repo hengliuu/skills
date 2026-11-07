@@ -66,6 +66,13 @@ namespaced, for example `hengliuu-skills:workflow-map`.
 > The plugin runs hooks: a SessionStart hook that loads the rules, and PreToolUse gates on
 > edits, merges and subagent dispatch. Read them in [`hooks/`](hooks) before you install.
 > Start a session with `HENGLIUU_GATES=off` to turn the gates off.
+>
+> The `jev` skill adds three more hooks, a session-start check, a prompt router and a
+> done-check, whose scripts live in [`skills/engineering/jev/scripts`](skills/engineering/jev/scripts).
+> The router and the done-check send text to TypeSafe's API, so they stay off in every folder
+> until you add it to `hooks_allow`, and they need your own key. `HENGLIUU_GATES=off` does not
+> switch them off: remove the folder from `hooks_allow`. See
+> [the jev setup](skills/engineering/jev/references/setup.md).
 
 opencode, Codex, Gemini CLI, Antigravity, Kiro and other harnesses install the same skills
 with `npx skills@latest add hengliuu/skills`, plus one manual step for the rules.
@@ -89,6 +96,7 @@ See [docs/install.md](docs/install.md).
 |---|---|
 | [`karpathy-guidelines`](skills/engineering/karpathy-guidelines/SKILL.md) | Surface assumptions, write the minimum, keep the diff surgical, name the check |
 | [`claude-md-author`](skills/engineering/claude-md-author/SKILL.md) | Writes and slims `AGENTS.md` and `CLAUDE.md` so every line earns its place |
+| [`jev`](skills/engineering/jev/SKILL.md) | Optional. A fast, cheap second opinion from TypeSafe's Jev: scores and filters long lists, re-picks each plan task's role and effort, and flags diff hunks worth a second look. Needs your own TypeSafe key |
 
 ### [Roles](skills/roles)
 
@@ -140,6 +148,9 @@ This repo stands on other people's work, and says so.
   [Andrej Karpathy's notes](https://x.com/karpathy/status/2015883857489522876), read directly.
 - [Matt Pocock's skills](https://github.com/mattpocock/skills). `grill-me` is the
   recommended way to stress-test a spec before it becomes a plan. MIT.
+- [TypeSafe](https://www.typesafe.ai) and its Jev model, an optional paid service. The
+  `jev` skill is our code, but every judgment it makes is a call to TypeSafe's API with
+  your own key. Nothing else in this repo needs it.
 
 Apart from the `karpathy-guidelines` fork, third-party skills are never copied into this
 repo. You install each one from its own repo, under its own license. The plugin checks for
