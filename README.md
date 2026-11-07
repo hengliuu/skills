@@ -115,10 +115,11 @@ On Claude Code, six thin agents in [`agents/`](agents) preload these skills and 
 role's model and effort.
 
 The [model map](skills/roles/role-orchestrator/references/model-map.md) also sets up the main
-session itself. **Senior** runs Opus 5.5 for a plan that is not settled. **Goat** runs Sonnet 5.5
-with an Opus 5.5 advisor for an approved plan: the main session costs half as much per token, and
-each advisor call adds an Opus-priced read of the transcript. Nobody has run both on the same
-batch yet, and the map says so.
+session itself: Sonnet 5.5 with an Opus 5.5 advisor, started with
+`claude --model sonnet --advisor opus`. The main session costs half as much per token as Opus 5.5,
+and each advisor call adds an Opus-priced read of the transcript. The advisor is a nudge and works
+on Claude Code with the Anthropic API only, so the map names a fallback for everywhere else. The
+saving is not measured yet, and the map says so.
 
 ### What it leaves to you
 

@@ -35,38 +35,32 @@ defaults to `medium`. Raise a role only after a measured miss at the level below
 
 ## The main session (orchestrator)
 
-The orchestrator runs on the session's model, so the person sets it with `/model` and
-`/effort`:
+The orchestrator runs on the session's model, so the person sets it with `/model`, `/effort`
+and `/advisor`. The setup this repo recommends is **Sonnet 5.5 at `medium` with an Opus 5.5
+advisor**. Start it with `claude --model sonnet --advisor opus`, or run `/advisor opus` inside a
+session. The main session costs half as much per token as Opus 5.5 (see the price table below),
+and each advisor call adds an Opus-priced read of the whole transcript on top.
 
-- **Default:** Opus 5.5 at `medium` for daily discussion, advice, requirements and
-  planning.
-- **`high`** for one session on a large decision (architecture, pricing, a hard spec).
-- **Sonnet 5.5 at `medium`** for status checks and quick questions.
+- **Escalate to Opus 5.5** (`/model opus`) for one session when the plan is not settled: an
+  architecture, a spec, a batch whose tasks depend on each other. A wrong split sends every
+  worker down the wrong path. Add `high` effort for a large decision (architecture, pricing, a
+  hard spec).
+- **Where there is no advisor** (Bedrock, Vertex, Foundry, or a harness other than Claude Code),
+  run the main session on Opus 5.5 at `medium`, and let the `designer` role or the human reading
+  the plan stand in for the advisor's plan check.
 - **One session per topic.** Every turn re-reads the whole conversation, so a long session
   costs more per message whatever the model. Start a new session when the topic changes,
   and keep state in files (a handoff, a checklist) rather than in the chat.
 
-## Main-session profiles
-
-Two ways to set up the main session. Pick one when the session starts. The roles below do not
-change with the profile, only who runs the main session and who checks its plan.
-
-| Profile | Main session | Advisor | Pick it when |
-| --- | --- | --- | --- |
-| **Senior** | Opus 5.5 `medium` | none | The plan is not settled: an architecture, a spec, a batch whose tasks depend on each other. A wrong split sends every worker down the wrong path |
-| **Goat** | Sonnet 5.5 `medium` | Opus 5.5 | The plan is approved and its task table is complete, so the session mostly dispatches, merges and fixes. The main session costs half as much per token (see the price table below), and each advisor call adds an Opus-priced read of the whole transcript on top |
-
-Start Goat with `claude --model sonnet --advisor opus`, or run `/advisor opus` inside a session.
-
-| Stage | Senior | Goat |
-| --- | --- | --- |
-| Plan | `designer` (opus) for an architecture or a spec, otherwise the main session drafts it | The main session (sonnet) drafts it, and the advisor reads it before it locks |
-| Search | A read-only search agent dispatched on `haiku` | Same |
-| Edit | `worker` (sonnet) | Same |
-| Write tests | `worker` (sonnet) | Same |
-| Run tests | `chore` (haiku), and the exit code is the verdict, never the agent's opinion of the output | Same |
-| A test keeps failing | The main session (opus) reads the failure and decides | The advisor reads it, or `designer` if the cause is unknown |
-| Review | `reviewer` (opus) | Same |
+| Stage | Who runs it |
+| --- | --- |
+| Plan | The main session drafts it, and the advisor reads it before it locks. `designer` (opus) writes an architecture or a spec |
+| Search | A read-only search agent dispatched on `haiku` |
+| Edit | `worker` (sonnet) |
+| Write tests | `worker` (sonnet) |
+| Run tests | `chore` (haiku), and the exit code is the verdict, never the agent's opinion of the output |
+| A test keeps failing | The advisor reads it, or `designer` if the cause is unknown |
+| Review | `reviewer` (opus), always |
 
 A visual task raises the worker to `high` and loads the project's own design skills, as in
 "Choosing effort per dispatch" above.
@@ -76,21 +70,21 @@ What the advisor is and is not, from Anthropic's docs (checked 2026-11-07):
 - **A nudge, not a gate.** Claude decides when to call it. It tends to consult before it commits to
   an approach, when an error keeps recurring and before it calls a task done, but no setting caps or
   forces a call. A line in the prompt such as "consult the advisor before you continue" only asks.
-  The `reviewer` is the check that always runs, so Goat never depends on the advisor firing.
+  The `reviewer` is the check that always runs, so this setup never depends on the advisor firing.
 - **Each call re-reads the whole transcript** at the advisor's rates, and that read is not cached.
   It pays on long work and adds little to a short task. For a short task, switch the main model
   instead.
 - **Claude Code and the Anthropic API only.** It is experimental, and it is not available on
-  Bedrock, Vertex or Foundry. On another harness, Goat's plan check is the `designer` role or the
-  human reading the plan.
+  Bedrock, Vertex or Foundry.
 - **The advisor must rank at or above the main model.** Sonnet 5.5 accepts Fable, Opus 5 or later
   and Sonnet 5.5. Claude Code does not attach a weaker advisor and shows that in `/advisor`, so
   check it there when the advisor never seems to speak.
 - `--advisor` is not listed in `claude --help`. `/advisor opus` saves the choice as `advisorModel`.
 
-**Not measured yet.** Nobody has run both profiles on the same batch. Before trusting the saving,
-run one batch each way and compare how often the reviewer sends a branch back and how many tasks
-are redone.
+**Not measured yet.** The saving is a mechanism, not a result. Nobody has run this setup and an
+Opus-only session on the same batch. Before trusting it, run one batch each way (at least five
+tasks) and compare the total cost from `/usage`, how often the reviewer sends a branch back and how
+many tasks are redone.
 
 ## Model cost, and why `fable` is not a saving
 
@@ -124,7 +118,7 @@ tool is available.
 | project-manager | `opus` | `medium` | — | — | `hengliuu-skills:role-project-manager` |
 
 - **orchestrator** is a skill, not an agent: it runs in the main session on the session's
-  model (opus) and effort.
+  model (sonnet with an Opus advisor, see "The main session") and effort.
 - **`autoCompactWindow`** is an integer number of tokens, 100000–1000000. A value such as
   `"100k"` is rejected when the agent loads, and the agent silently keeps the session's
   window. `100000` keeps every chore request inside Haiku's base price band (prompts above
