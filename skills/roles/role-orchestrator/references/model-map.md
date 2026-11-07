@@ -54,7 +54,7 @@ change with the profile, only who runs the main session and who checks its plan.
 | Profile | Main session | Advisor | Pick it when |
 | --- | --- | --- | --- |
 | **Senior** | Opus 5.5 `medium` | none | The plan is not settled: an architecture, a spec, a batch whose tasks depend on each other. A wrong split sends every worker down the wrong path |
-| **Goat** | Sonnet 5.5 `medium` | Opus 5.5 | The plan is approved and its task table is complete, so the session mostly dispatches, merges and fixes. A turn costs half as much (see the price table below) |
+| **Goat** | Sonnet 5.5 `medium` | Opus 5.5 | The plan is approved and its task table is complete, so the session mostly dispatches, merges and fixes. The main session costs half as much per token (see the price table below), and each advisor call adds an Opus-priced read of the whole transcript on top |
 
 Start Goat with `claude --model sonnet --advisor opus`, or run `/advisor opus` inside a session.
 
