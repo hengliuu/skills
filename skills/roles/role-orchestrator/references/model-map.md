@@ -46,6 +46,52 @@ The orchestrator runs on the session's model, so the person sets it with `/model
   costs more per message whatever the model. Start a new session when the topic changes,
   and keep state in files (a handoff, a checklist) rather than in the chat.
 
+## Main-session profiles
+
+Two ways to set up the main session. Pick one when the session starts. The roles below do not
+change with the profile, only who runs the main session and who checks its plan.
+
+| Profile | Main session | Advisor | Pick it when |
+| --- | --- | --- | --- |
+| **Senior** | Opus 5.5 `medium` | none | The plan is not settled: an architecture, a spec, a batch whose tasks depend on each other. A wrong split sends every worker down the wrong path |
+| **Goat** | Sonnet 5.5 `medium` | Opus 5.5 | The plan is approved and its task table is complete, so the session mostly dispatches, merges and fixes. A turn costs half as much (see the price table below) |
+
+Start Goat with `claude --model sonnet --advisor opus`, or run `/advisor opus` inside a session.
+
+| Stage | Senior | Goat |
+| --- | --- | --- |
+| Plan | `designer` (opus) for an architecture or a spec, otherwise the main session drafts it | The main session (sonnet) drafts it, and the advisor reads it before it locks |
+| Search | A read-only search agent dispatched on `haiku` | Same |
+| Edit | `worker` (sonnet) | Same |
+| Write tests | `worker` (sonnet) | Same |
+| Run tests | `chore` (haiku), and the exit code is the verdict, never the agent's opinion of the output | Same |
+| A test keeps failing | The main session (opus) reads the failure and decides | The advisor reads it, or `designer` if the cause is unknown |
+| Review | `reviewer` (opus) | Same |
+
+A visual task raises the worker to `high` and loads the project's own design skills, as in
+"Choosing effort per dispatch" above.
+
+What the advisor is and is not, from Anthropic's docs (checked 2026-11-07):
+
+- **A nudge, not a gate.** Claude decides when to call it. It tends to consult before it commits to
+  an approach, when an error keeps recurring and before it calls a task done, but no setting caps or
+  forces a call. A line in the prompt such as "consult the advisor before you continue" only asks.
+  The `reviewer` is the check that always runs, so Goat never depends on the advisor firing.
+- **Each call re-reads the whole transcript** at the advisor's rates, and that read is not cached.
+  It pays on long work and adds little to a short task. For a short task, switch the main model
+  instead.
+- **Claude Code and the Anthropic API only.** It is experimental, and it is not available on
+  Bedrock, Vertex or Foundry. On another harness, Goat's plan check is the `designer` role or the
+  human reading the plan.
+- **The advisor must rank at or above the main model.** Sonnet 5.5 accepts Fable, Opus 5 or later
+  and Sonnet 5.5. Claude Code does not attach a weaker advisor and shows that in `/advisor`, so
+  check it there when the advisor never seems to speak.
+- `--advisor` is not listed in `claude --help`. `/advisor opus` saves the choice as `advisorModel`.
+
+**Not measured yet.** Nobody has run both profiles on the same batch. Before trusting the saving,
+run one batch each way and compare how often the reviewer sends a branch back and how many tasks
+are redone.
+
 ## Model cost, and why `fable` is not a saving
 
 First-party API prices per million tokens (input / output), from Anthropic's model table
@@ -99,5 +145,6 @@ overrides every effort setting, so leave it unset in sessions that dispatch role
 
 ## Sources
 
-Checked 2026-10-11 against Claude Code 2.1.296. The `autoCompactWindow`
+Checked 2026-10-11 against Claude Code 2.1.296. The advisor facts in the profiles section
+were read from code.claude.com/docs/en/advisor on 2026-11-07 and not run locally. The `autoCompactWindow`
 range and the namespacing rule came from a local `--plugin-dir` experiment.
