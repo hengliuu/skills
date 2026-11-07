@@ -17,7 +17,9 @@ skills, context, hooks and manifests. Read `README.md` for what's inside and how
     session by the SessionStart hook), `workflow-map` (the router: it owns the stage-to-skill table and
     the execution-tier decision, so those live in exactly one place), `intent-capture`, `commit-group`
     and `loop-discipline`.
-  - `skills/engineering/` holds `karpathy-guidelines` and `claude-md-author`.
+  - `skills/engineering/` holds `karpathy-guidelines`, `claude-md-author` and `jev`. `jev` is optional: its
+    scripts call TypeSafe's cloud API with the user's own key, so its hooks stay off until a folder is in
+    `~/.claude/jev/config.json` `hooks_allow`. Setup and troubleshooting live in its `references/setup.md`.
   - `skills/roles/` holds `role-orchestrator` (a main session running a batch of independent tasks, one
     worktree each, merged by cherry-pick) and seven `role-*` skills that carry each role's method, so
     they travel to any harness. `role-orchestrator/references/model-map.md` is the single source for
@@ -47,6 +49,12 @@ skills, context, hooks and manifests. Read `README.md` for what's inside and how
     which needs a build manifest and neither `graft/` nor `graphify-out/`. It stays **tool-agnostic on
     purpose**: both map tools are 0.x shipping weekly, so the always-injected rule names the behaviour
     and the hook reports what is on disk. Both ship their own wiring, so never add a competing set here.
+  - `hooks/check-jev.sh` (SessionStart) plus `skills/engineering/jev/scripts/hook_router.py`
+    (UserPromptSubmit) and `hook_stop.py` (Stop) are jev's. They send text to a cloud API, so each checks
+    `hooks_allow` before anything leaves the machine, fails open, and stays silent in a folder that is not
+    allowed. `HENGLIUU_GATES=off` does not switch them off: remove the folder from `hooks_allow`. Run
+    `python3 -m unittest discover -s skills/engineering/jev/tests` after changing them, and again with
+    `/usr/bin/python3`.
   - Hooks must run on Python 3.9 (macOS's `/usr/bin/python3`): no backslash inside an f-string
     expression, and `from __future__ import annotations` wherever `X | None` appears. Run
     `python3 -m unittest discover -s hooks/tests` after changing them, and again with `/usr/bin/python3`.

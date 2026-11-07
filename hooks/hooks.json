@@ -16,6 +16,37 @@
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/check-codebase-map.sh\""
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/check-jev.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 10,
+            "command": "P=\"${CLAUDE_PLUGIN_ROOT}/skills/engineering/jev/scripts/hook_router.py\"; if python3 -c '' >/dev/null 2>&1; then exec python3 \"$P\"; else exec python \"$P\"; fi"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 15,
+            "command": "P=\"${CLAUDE_PLUGIN_ROOT}/skills/engineering/jev/scripts/hook_stop.py\"; if python3 -c '' >/dev/null 2>&1; then exec python3 \"$P\"; else exec python \"$P\"; fi"
+          }
+        ]
       }
     ],
     "PreToolUse": [

@@ -1,0 +1,13 @@
+{
+  "stop_threshold": 0.8,
+  "router_threshold": 0.7,
+  "router_skills": {
+    "hengliuu-skills:karpathy-guidelines": "The prompt asks to write, review, or refactor code.",
+    "brainstorming": "The prompt asks for a new feature, component, or behaviour change that has not been designed yet.",
+    "systematic-debugging": "The prompt reports a bug, a failing test, an error message, or unexpected behaviour to fix.",
+    "writing-plans": "The prompt hands over a spec or requirements for a multi-step change and asks to plan it.",
+    "hengliuu-skills:workflow-map": "The prompt asks where to start or what the next step or stage of a piece of work is, approves a plan, or asks to execute, dispatch, or start working through a plan.",
+    "hengliuu-skills:commit-group": "The prompt asks to commit, group, or finish up uncommitted changes.",
+    "hengliuu-skills:jev": "The prompt needs many repeated judgments over a list (scoring, ranking, filtering, or triaging items), or asks to dispatch, orchestrate, or run a plan's tasks with agents or subagents."
+  }
+}
