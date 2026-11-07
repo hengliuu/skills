@@ -54,16 +54,20 @@ and each advisor call adds an Opus-priced read of the whole transcript on top.
 
 | Stage | Who runs it |
 | --- | --- |
-| Plan | The main session drafts it, and the advisor reads it before it locks. `designer` (opus) writes an architecture or a spec |
+| Plan | The main session drafts it, and the advisor reads it before it locks. `designer` (opus) writes an architecture or a spec. With Jev set up, `jev route` gives each task a second pick of role and effort before dispatch |
 | Search | A read-only search agent dispatched on `haiku` |
 | Edit | `worker` (sonnet) |
 | Write tests | `worker` (sonnet) |
 | Run tests | `chore` (haiku), and the exit code is the verdict, never the agent's opinion of the output |
 | A test keeps failing | The advisor reads it, or `designer` if the cause is unknown |
-| Review | `reviewer` (opus), always |
+| Review | `reviewer` (opus), always. With Jev set up, `jev gate` lists the hunks of a large diff worth a second look before the reviewer starts |
 
 A visual task raises the worker to `high` and loads the project's own design skills, as in
 "Choosing effort per dispatch" above.
+
+Jev is optional. It needs the user's own TypeSafe key and an allowed folder, and without it every
+stage works as written. A task that `jev route` marks UNSURE is shown to the human before it is
+dispatched, and is the first thing to point the advisor at when it reads the plan.
 
 What the advisor is and is not, from Anthropic's docs (checked 2026-11-07):
 

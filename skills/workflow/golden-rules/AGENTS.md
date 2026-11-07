@@ -66,7 +66,7 @@ Dispatch without a `name` unless a team is genuinely intended.
 ## Delegating to subagents
 
 A fork always runs on the session's model, so a mechanical task sent as a fork
-pays top-model prices for nothing. Fork only when the task needs this conversation's
+pays that model's price for nothing. Fork only when the task needs this conversation's
 context. Otherwise dispatch a `role-orchestrator` role with a full brief and the model and
 effort from the `role-orchestrator` model map: chore on haiku, worker on sonnet, designer
 and reviewer on opus. Name the role, model and effort in the reply each time you dispatch.
