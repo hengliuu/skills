@@ -35,8 +35,10 @@ skills, context, hooks and manifests. Read `README.md` for what's inside and how
   rejected at load with only a debug-log warning, and the agent keeps the session's window).
 - `hooks/hooks.json` — all hooks of the plugin. The SessionStart hook injects the Golden Rules and warns
   when the superpowers prerequisite isn't installed (it accepts a plugin install or a skills-CLI install
-  in `~/.claude/skills/` or project `.claude/skills/`), and when EGM isn't (plugin install only, keyed
-  `egm@egm`, because its reviewer agents don't travel with the skills CLI).
+  in `~/.claude/skills/` or project `.claude/skills/`). EGM is optional and gets no warning:
+  `workflow-map` falls back to `brainstorming` without it. Claude Code caps a hook's stdout at 10,000
+  characters and past that shows the model only a 2,000-character preview, so the rules would drop out
+  silently. `hooks/tests/test_session_start.py` fails before that happens.
   - `hooks/gate.py` (PreToolUse) is the one-shot karpathy and review gate for the main session, plus an
     always-on deny of a subagent's named Agent spawn, off with `HENGLIUU_GATES=off`.
   - `hooks/map_gate.py` is its subagent-only sibling: per file, a large source file is read through
