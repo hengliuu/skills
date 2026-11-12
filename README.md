@@ -27,9 +27,9 @@ effort.
    product and tracker calls on Opus.
 4. **One map from request to merge.** `workflow-map` routes each piece of work to the
    stage and skill that own it. Every plan ends in a task table (task, depends on, files,
-   role, effort, check), so "done" always has a named check behind it. A large feature
-   gets its design reviewed by [EGM](https://github.com/google/elephant-goldfish-model)'s
-   zero-context reviewers before any code is written.
+   role, effort, check), so "done" always has a named check behind it. With
+   [EGM](https://github.com/google/elephant-goldfish-model) installed, a large feature gets
+   its design reviewed by zero-context reviewers before any code is written.
 
 ## How work flows
 
@@ -44,18 +44,23 @@ A human approves each handover, and pushing is always the human's step.
 
 ## Install
 
-On Claude Code. Two prerequisites are required: [superpowers](https://github.com/obra/superpowers)
-for planning, TDD and review, and [EGM](https://github.com/google/elephant-goldfish-model)
-for the design review of large features. Keep both: EGM stops at the approved design, and
-superpowers carries the build. Install EGM as a plugin, not with `npx skills`, because its
-reviewer agents only come with the plugin.
+On Claude Code. One prerequisite is required: [superpowers](https://github.com/obra/superpowers)
+for planning, TDD and review.
 
 ```
 npx skills@latest add obra/superpowers -a claude-code -g
-/plugin marketplace add google/elephant-goldfish-model
-/plugin install egm@egm
 /plugin marketplace add hengliuu/skills
 /plugin install hengliuu-skills@hengliuu
+```
+
+Optional: [EGM](https://github.com/google/elephant-goldfish-model) adds a design review by
+zero-context reviewers for large features. Without it, `workflow-map` keeps every design on
+`brainstorming`. Install it as a plugin, not with `npx skills`, because its reviewer agents
+only come with the plugin.
+
+```
+/plugin marketplace add google/elephant-goldfish-model
+/plugin install egm@egm
 ```
 
 Check it worked: open a new session and ask *"What do the Golden Rules say about
@@ -87,7 +92,7 @@ See [docs/install.md](docs/install.md).
 | [`golden-rules`](skills/workflow/golden-rules/AGENTS.md) | The working-style rules. Loaded every session, never invoked |
 | [`workflow-map`](skills/workflow/workflow-map/SKILL.md) | Routes work to the right stage and skill, and picks how an approved plan runs |
 | [`intent-capture`](skills/workflow/intent-capture/SKILL.md) | Records why someone asked for the work before anyone decides how to build it |
-| [`commit-group`](skills/workflow/commit-group/SKILL.md) | Groups changes into atomic commits and shows the plan before anything is committed |
+| [`commit-group`](skills/workflow/commit-group/SKILL.md) | Groups changes into atomic commits and shows the plan before anything is committed (`--auto` skips the approval) |
 | [`loop-discipline`](skills/workflow/loop-discipline/SKILL.md) | Hard caps and stall exits for `/goal` and `/loop`, so nothing runs unattended without a limit |
 
 ### [Engineering](skills/engineering)
@@ -147,7 +152,7 @@ This repo stands on other people's work, and says so.
   open-source method created at Google and based on Dave Rensin's essay
   [Elephants, Goldfish, and the New Golden Age of Software Engineering](https://medium.com/@drensin/elephants-goldfish-and-the-new-golden-age-of-software-engineering-c33641a48874).
   Its zero-context reviewers check the design of a large feature before any code is
-  written. Required. Apache 2.0. EGM is not an officially supported Google product, and
+  written. Optional. Apache 2.0. EGM is not an officially supported Google product, and
   this repo is not affiliated with or endorsed by Google.
 - [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) by
   forrestchang. `karpathy-guidelines` is a fork of it (MIT, with the upstream notice in

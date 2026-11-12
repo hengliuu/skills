@@ -50,7 +50,7 @@ the first survives the requester leaving.
 ## While a plan file exists
 
 **The plan file on disk is the source of truth for progress.** Upstream
-`writing-plans` / `executing-plans` only write to ephemeral TodoWrite, so nothing
+`writing-plans` / `executing-plans` only write to the session's todo list, so nothing
 records progress unless you do. Tick a task the moment it is verified, before starting
 the next — a session that dies mid-plan must leave a file that tells the truth.
 `workflow-map` carries the frontmatter fields.
@@ -80,5 +80,5 @@ when there is no map, aim Grep at the directories the task actually touches.
 
 ## Autonomous runs
 
-Invoke `loop-discipline` before setting any `/goal` or `/loop`. A loop without a hard
-cap and a stall exit is banned.
+Invoke `loop-discipline` before starting any autonomous loop (`/goal` or `/loop` on Claude
+Code). A loop without a hard cap and a stall exit is banned.

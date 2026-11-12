@@ -4,7 +4,7 @@ description: >
   Analyze unstaged/uncommitted changes, group them logically by concern
   (feature, bugfix, config, docs, deps, generated), and present a suggested
   commit plan. After user approval, execute commits per group. Trigger:
-  /commit-group, or when Claude proactively offers at end of a work session.
+  commit-group, or when the agent proactively offers at end of a work session.
 argument-hint: "[--auto]"
 ---
 
