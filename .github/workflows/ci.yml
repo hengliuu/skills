@@ -8,8 +8,11 @@ on:
 
 jobs:
   hooks:
-    runs-on: ubuntu-latest
+    # ubuntu-latest moved to 26.04, which has no Python 3.9 build. The hooks must still
+    # run on 3.9, the /usr/bin/python3 macOS ships.
+    runs-on: ubuntu-24.04
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.9", "3.12"]
     steps:
